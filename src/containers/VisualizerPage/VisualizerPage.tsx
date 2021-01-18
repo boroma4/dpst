@@ -3,6 +3,7 @@ import Tree from 'react-tree-graph';
 import 'react-tree-graph/dist/style.css'
 import './VisualizerPage.css';
 import {TreeNode} from "./Types/TreeNode";
+import {Container} from "@material-ui/core";
 
 interface Props {
     tree:TreeNode
@@ -12,6 +13,7 @@ const VisualizerPage:FunctionComponent<Props> = (props) => {
     const [data, setData] = useState<TreeNode>(props.tree);
 
     return(
+        <Container style={{ position:'relative'}}>
             <Tree
                 data={data}
                 height={700}
@@ -19,6 +21,8 @@ const VisualizerPage:FunctionComponent<Props> = (props) => {
                 textProps={{dy:20}}
                 nodeProps={{r:10}}
             />
+        </Container>
+
     )
 };
 

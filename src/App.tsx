@@ -14,6 +14,7 @@ import {
 } from "react-router-dom";
 import data from "./components/VisualizerComponents/data";
 import {TreeNode} from "./containers/VisualizerPage/Types/TreeNode";
+import {Container} from "@material-ui/core";
 
 
 function App() {
@@ -21,20 +22,20 @@ function App() {
     <div className="App">
       <Router>
           <Header/>
-          <Switch>
-            <Route path="/visualizer" exact={true}>
-                <VisualizerPage  tree={data as unknown as TreeNode}/>
-            </Route>
-            <Route path="/theory" exact={true}>
-                <TheoryPage />
-            </Route>
-            <Route path="/" exact={true}>
-                <HomePage />
-            </Route>
-            <Route>
-                <ErrorPage />
-            </Route>
-        </Switch>
+              <Switch>
+                  <Route path="/visualizer" exact={true}>
+                      <VisualizerPage  tree={data as unknown as TreeNode}/>
+                  </Route>
+                  <Route path="/theory" exact={true}>
+                      <TheoryPage />
+                  </Route>
+                  <Route path="/" exact={true}>
+                      <HomePage />
+                  </Route>
+                  <Route>
+                      <ErrorPage />
+                  </Route>
+              </Switch>
           <Footer/>
       </Router>
     </div>
