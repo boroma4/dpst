@@ -12,6 +12,8 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
+import data from "./components/VisualizerComponents/data";
+import {TreeNode} from "./containers/VisualizerPage/Types/TreeNode";
 
 
 function App() {
@@ -21,7 +23,7 @@ function App() {
           <Header/>
           <Switch>
             <Route path="/visualizer" exact={true}>
-                <VisualizerPage />
+                <VisualizerPage  tree={data as unknown as TreeNode}/>
             </Route>
             <Route path="/theory" exact={true}>
                 <TheoryPage />
