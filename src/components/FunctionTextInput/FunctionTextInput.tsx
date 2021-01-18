@@ -1,48 +1,28 @@
-import React, {useState} from "react";
-import Button from "@material-ui/core/Button";
+import React, {useEffect} from "react";
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-monokai";
-
-import {compileInput} from "../../utils/InputProcessing";
 import {lang} from "../../types/types";
-import {executeJsFunction} from "../../utils/CodeExecution";
+import {useWindowSize} from "../../hooks/useWindowSize";
 
-const defFunc = `function fib(n) {
-   if(n < 2) return n;
-            
-   return fib(n-1) + fib(n-2);
-}
-`;
 
-const defCall = `fib(5);`;
 
 interface Props{
     language: lang;
-    setRecursionTree: Function;
+    input: string;
+    setInput: (value: string, event?: any) => void;
 }
 
-export default function ({language, setRecursionTree}: Props) {
+export default function ({language, input, setInput}: Props) {
 
-    const [input, setInput] = useState<string>(defFunc);
-    const [call, setCall] = useState<string>(defCall);
-    const run = () =>{
-        try {
-            const func = compileInput(input, call, language);
-            setRecursionTree(executeJsFunction(func));
-        }
-        catch (e) {
-            alert('broken function bro');
-            console.log(e)
-        }
-    };
+    const windowSize = useWindowSize();
 
     return(
         <>
             <AceEditor
-                style={{width:'auto'}}
+                style={{width:'auto', height: windowSize.height / 1.8}}
                 placeholder="Write some code"
                 mode={language}
                 theme="monokai"
@@ -59,11 +39,6 @@ export default function ({language, setRecursionTree}: Props) {
                     showLineNumbers: true,
                     tabSize: 2,
                 }}/>
-            <br/>
-            {call}
-            <Button onClick={()=>run()}>
-                RUN
-            </Button>
         </>
     )
 }

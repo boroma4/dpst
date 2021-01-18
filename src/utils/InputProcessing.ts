@@ -14,7 +14,6 @@ export function compileInput(inputCode: string, inputCall: string, language: lan
     }
 
     inputCall = inputCall.replace(functionName, ' fn(');
-    console.log(inputCode);
 
     // eslint-disable-next-line no-eval
     return group(inputCode, inputCall, []);

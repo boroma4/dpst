@@ -1,7 +1,7 @@
 import {FunctionData} from "../types/types";
 import {buildRecursionTree} from "./TreeBuilding";
 
-export function executeJsFunction(this:any, fnData: FunctionData): any{
+export function executeJsFunction(this:any, fnData: FunctionData, useMemo: boolean): any{
 
     // pure magic
     var fn: Function, _: Function;
@@ -10,18 +10,39 @@ export function executeJsFunction(this:any, fnData: FunctionData): any{
     const self = this;
     const callStack: number[] = [];
     const parents: any = {};
+    const memo: any = {};
     let nodes = 0;
 
-    function run(...args: any[]){
+    function run(...args: any[]): any{
         const currentKey = JSON.stringify(args);
-
         parents[nodes] = {
             parent: callStack.length > 0 ? callStack[callStack.length - 1] : undefined,
-            nodeValue: `${currentKey} => ???`
+            nodeValue: currentKey
         };
+
+        if(useMemo && memo[currentKey]){
+            for (let key of Object.keys(parents)){
+                let node = parents[key];
+                if(node.nodeValue === currentKey){
+                    node.nodeValue += `=>${memo[currentKey]}`
+                }
+            }
+            return memo[currentKey]
+        }
 
         callStack.push(nodes++);
         const result = userFn.apply(self, args);
+
+        for (let key of Object.keys(parents)){
+            let node = parents[key];
+            if(node.nodeValue === currentKey){
+                node.nodeValue += `=>${result}`
+            }
+        }
+
+        if(useMemo){
+            memo[currentKey] = result;
+        }
 
         callStack.pop();
         return result;
