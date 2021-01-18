@@ -5,12 +5,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import logo from '../../icon.png'
 import { useHistory } from "react-router-dom";
-import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             flexGrow: 1,
+            height: '10vh'
         },
         bar: {
             backgroundColor: 'azure',
