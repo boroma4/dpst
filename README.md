@@ -4,7 +4,7 @@
 - [x] Recusrion tree drawing
 - [ ] Python support
 - [ ] Theory page
-- [ ] Automatic memoization
+- [x] Automatic memoization
 - [ ] Example templates (Fibonacci, Edit Distance, etc..)
 - [ ] Poster
 
