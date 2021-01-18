@@ -30,28 +30,17 @@ const VisualizerPage:FunctionComponent<Props> = (props: Props) => {
     const classes = useStyles();
     const [data, setData] = useState<TreeNode>(props.tree);
 
-    return(
-        <Tree
-            data={data}
-            height={700}
-            width={1000}
-            textProps={{dy:20}}
-            nodeProps={{r:10}}
-        />
-    )
-
-
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={3}>
-                    <CodeColumn/>
+                    <CodeColumn setRecursionTree={setData}/>
                 </Grid>
                 <Grid item xs>
                     <Tree
                         data={data}
-                        height={700}
-                        width={1000}
+                        height={500}
+                        width={500}
                         textProps={{dy:20}}
                         nodeProps={{r:10}}
                     />

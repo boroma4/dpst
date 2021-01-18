@@ -8,4 +8,3 @@ export type FunctionData = {
 }
 
 export type Variable = { name: string; value: string }
-

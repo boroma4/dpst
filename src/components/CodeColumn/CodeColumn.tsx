@@ -4,6 +4,9 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import {lang} from "../../types/types";
 
+interface Props {
+    setRecursionTree: Function;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -14,13 +17,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-export default function () {
+export default function ({setRecursionTree}: Props) {
     const classes = useStyles();
     const [language, setLanguage] = useState<lang>('javascript');
 
     return(
         <div className={classes.root}>
-            <FunctionTextInput language={language}/>
+            <FunctionTextInput language={language} setRecursionTree={setRecursionTree}/>
         </div>
     )
 }

@@ -5,6 +5,7 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-monokai";
+
 import {compileInput} from "../../utils/InputProcessing";
 import {lang} from "../../types/types";
 import {executeJsFunction} from "../../utils/CodeExecution";
@@ -17,18 +18,20 @@ const defFunc = `function fib(n) {
 `;
 
 const defCall = `fib(5);`;
+
 interface Props{
     language: lang;
+    setRecursionTree: Function;
 }
 
-export default function ({language}: Props) {
+export default function ({language, setRecursionTree}: Props) {
 
     const [input, setInput] = useState<string>(defFunc);
     const [call, setCall] = useState<string>(defCall);
     const run = () =>{
         try {
             const func = compileInput(input, call, language);
-            executeJsFunction(func);
+            setRecursionTree(executeJsFunction(func));
         }
         catch (e) {
             alert('broken function bro');
