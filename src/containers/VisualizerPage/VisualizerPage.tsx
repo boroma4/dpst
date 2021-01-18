@@ -1,9 +1,16 @@
-import React from "react";
+import React, {FunctionComponent, useState} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import CodeColumn from "../../components/CodeColumn/CodeColumn";
-import Paper from "@material-ui/core/Paper";
+import Tree from 'react-tree-graph';
+import 'react-tree-graph/dist/style.css'
+import './VisualizerPage.css';
+import {TreeNode} from "./Types/TreeNode";
+
+interface Props {
+    tree:TreeNode
+}
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -18,8 +25,21 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function () {
+
+const VisualizerPage:FunctionComponent<Props> = (props: Props) => {
     const classes = useStyles();
+    const [data, setData] = useState<TreeNode>(props.tree);
+
+    return(
+        <Tree
+            data={data}
+            height={700}
+            width={1000}
+            textProps={{dy:20}}
+            nodeProps={{r:10}}
+        />
+    )
+
 
     return (
         <div className={classes.root}>
@@ -28,9 +48,17 @@ export default function () {
                     <CodeColumn/>
                 </Grid>
                 <Grid item xs>
-                    <Paper className={classes.paper}>Visualizer</Paper>
+                    <Tree
+                        data={data}
+                        height={700}
+                        width={1000}
+                        textProps={{dy:20}}
+                        nodeProps={{r:10}}
+                    />
                 </Grid>
             </Grid>
         </div>
     )
-}
+};
+
+export default VisualizerPage;
