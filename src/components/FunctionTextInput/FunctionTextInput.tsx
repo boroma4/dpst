@@ -4,13 +4,13 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-monokai";
-import {lang} from "../../types/types";
+import {LangName} from "../../types/types";
 import {useWindowSize} from "../../hooks/useWindowSize";
 
 
 
 interface Props{
-    language: lang;
+    language: LangName;
     input: string;
     setInput: (value: string, event?: any) => void;
 }

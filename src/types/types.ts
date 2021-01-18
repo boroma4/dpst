@@ -1,4 +1,4 @@
-export type lang = 'javascript' | 'python';
+export type LangName = 'javascript' | 'python';
 
 export type FunctionData = {
     name?: string
@@ -8,3 +8,10 @@ export type FunctionData = {
 }
 
 export type Variable = { name: string; value: string }
+export type TemplateName = 'Fibonacci' | 'Custom';
+
+export type ExampleTemplate = {
+    javascript: FunctionData,
+    python: FunctionData
+    // add others
+}

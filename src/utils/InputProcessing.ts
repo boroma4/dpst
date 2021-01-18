@@ -1,6 +1,6 @@
-import {FunctionData, lang, Variable} from "../types/types";
+import {FunctionData, LangName, Variable} from "../types/types";
 
-export function compileInput(inputCode: string, inputCall: string, language: lang): FunctionData {
+export function compileInput(inputCode: string, inputCall: string, language: LangName): FunctionData {
 
     let functionName = 'ewwwwwwwewaeaw';
 
@@ -9,13 +9,12 @@ export function compileInput(inputCode: string, inputCall: string, language: lan
         functionName = ` ${functionName}(`
     }
 
-    while(inputCode.includes(functionName)){
+    while(inputCode.includes(functionName) && functionName !== ' fn('){
         inputCode = inputCode.replace(functionName, ' fn(');
     }
 
     inputCall = inputCall.replace(functionName, ' fn(');
 
-    // eslint-disable-next-line no-eval
     return group(inputCode, inputCall, []);
 }
 
@@ -46,7 +45,7 @@ export const group = (
     return { params, body, variables }
 };
 
-export const ungroup = (fnData: FunctionData) => {
+export const ungroup = (fnData: FunctionData, lang: LangName) => {
     const { params, body, variables } = fnData;
 
     const paramsNames = params.map(({ name }) => name).join(',');
@@ -54,6 +53,17 @@ export const ungroup = (fnData: FunctionData) => {
 
     const var1 = variables && variables[0];
     const var2 = variables && variables[1];
+
+    if(lang === 'python'){
+        return {
+            fnCode: `def fn(${paramsNames}): \n${body}\n`,
+            fnCall: `fn(${paramsValues})`,
+            fnVars: [
+                { name: var1?.name || '', value: var1?.value || '' },
+                { name: var2?.name || '', value: var2?.value || '' },
+            ],
+        }
+    }
 
     return {
         fnCode: `function fn(${paramsNames}) {\n${body}\n}`,
