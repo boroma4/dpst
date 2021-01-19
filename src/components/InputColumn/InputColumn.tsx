@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import FunctionTextInput from "../FunctionTextInput/FunctionTextInput";
+import CodeEditor from "../CodeEditor/CodeEditor";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import {LangName, TemplateName} from "../../types/types";
@@ -26,11 +26,11 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             margin:'5px',
-            textAlign:'left'
+            textAlign:'left',
         },
         runForm: {
             marginTop: '10px',
-            marginLeft: '5px'
+            marginLeft: '5px',
         },
         formControl: {
             margin: theme.spacing(1),
@@ -50,6 +50,7 @@ export default function ({setRecursionTree}: Props) {
     const [call, setCall] = useState<string>(fnCall);
     const [language, setLanguage] = useState<LangName>('javascript');
     const [useMemo, setUseMemo] = useState<boolean>(false);
+    const [highlightOverlaps, setHighlightOverlaps] = useState<boolean>(false);
 
     const updateTemplate = (e:React.ChangeEvent<{ value: unknown }>) =>{
       const templateName: TemplateName = e.target.value as TemplateName;
@@ -70,7 +71,7 @@ export default function ({setRecursionTree}: Props) {
     const run = () =>{
         try {
             const func = compileInput(input, call, language);
-            const tree = executeJsFunction(func, useMemo);
+            const tree = executeJsFunction(func, useMemo, highlightOverlaps);
             setRecursionTree(tree);
         }
         catch (e) {
@@ -107,8 +108,12 @@ export default function ({setRecursionTree}: Props) {
                     control={<Switch checked={useMemo} onChange={()=>setUseMemo(!useMemo)} name="checkedA" />}
                     label="Use Memoization"
                 />
+                <FormControlLabel
+                    control={<Switch checked={highlightOverlaps} onChange={()=>setHighlightOverlaps(!highlightOverlaps)} name="checkssedA" />}
+                    label="Highlight overlapping calls"
+                />
             </FormControl>
-            <FunctionTextInput
+            <CodeEditor
                 language={language}
                 input={input}
                 setInput={setInput}
