@@ -114,6 +114,7 @@ export default function ({setRecursionTree}: Props) {
                     onChange={updateTemplate}
                 >
                     <MenuItem value={'Fibonacci'}>Fibonacci</MenuItem>
+                    <MenuItem value={'LCS'}>LCS</MenuItem>
                     <MenuItem value={'Custom'}>Custom</MenuItem>
                 </Select>
             </FormControl>

@@ -38,8 +38,7 @@ export default function Header() {
     const history = useHistory();
 
     return (
-        <div
-            className={classes.root}>
+        <div className={classes.root}>
             <AppBar position="fixed" className={classes.bar}>
                 <Toolbar variant="dense">
                     <img src={logo} height={50} width={50} alt={'logo'} className={classes.logo} onClick={()=>history.push('/')}/>
