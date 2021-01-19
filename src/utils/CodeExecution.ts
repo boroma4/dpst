@@ -1,7 +1,9 @@
 import {FunctionData} from "../types/types";
 import {buildRecursionTree} from "./TreeBuilding";
+import {TreeNode} from "../containers/VisualizerPage/Types/TreeNode";
 
-export function executeJsFunction(this:any, fnData: FunctionData, useMemo: boolean, highlightOverlaps: boolean): any{
+
+export function executeAndGetTree(this:any, fnData: FunctionData, useMemo: boolean, highlightOverlaps: boolean): TreeNode{
 
     // pure magic
     var fn: Function, _: Function;
@@ -61,6 +63,7 @@ export function executeJsFunction(this:any, fnData: FunctionData, useMemo: boole
 
     return buildRecursionTree(parents, highlightOverlaps);
 }
+
 
 const parseFunction = (fnData: FunctionData) => {
     const vars = fnData.variables

@@ -1,19 +1,29 @@
 import {FunctionData, LangName, Variable} from "../types/types";
+import {requestPythonToJs} from "./TranslationRequest";
 
-export function compileInput(inputCode: string, inputCall: string, language: LangName): FunctionData {
+export async function compileInput(inputCode: string, inputCall: string, language: LangName): Promise<FunctionData> {
 
     let functionName = 'ewwwwwwwewaeaw';
 
     if(language === 'javascript'){
         functionName = inputCode.substring(inputCode.indexOf('function') + 'function'.length + 1, inputCode.indexOf('('));
-        functionName = ` ${functionName}(`
-    }
+        functionName = ` ${functionName}(`;
+        inputCall = inputCall.replace(functionName, ' fn(');
 
-    while(inputCode.includes(functionName) && functionName !== ' fn('){
-        inputCode = inputCode.replace(functionName, ' fn(');
-    }
+        while(inputCode.includes(functionName) && functionName !== ' fn('){
+            inputCode = inputCode.replace(functionName, ' fn(');
+        }
+    }else if(language === 'python'){
+        functionName = inputCode.substring(inputCode.indexOf('def') + 'def'.length + 1, inputCode.indexOf('('));
+        functionName = ` ${functionName}:`;
+        inputCall = inputCall.replace(functionName, ' fn:');
 
-    inputCall = inputCall.replace(functionName, ' fn(');
+        while(inputCode.includes(functionName) && functionName !== ' fn:'){
+            inputCode = inputCode.replace(functionName, ' fn:');
+        }
+        const response = await requestPythonToJs(inputCode);
+        inputCode = response.fn;
+    }
 
     return group(inputCode, inputCall, []);
 }

@@ -7,7 +7,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import {compileInput, ungroup} from "../../utils/InputProcessing";
-import {executeJsFunction} from "../../utils/CodeExecution";
+import {executeAndGetTree} from "../../utils/CodeExecution";
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -56,6 +56,7 @@ export default function ({setRecursionTree}: Props) {
     const [error, setError] = useState<string>('');
     const [useMemo, setUseMemo] = useState<boolean>(false);
     const [highlightOverlaps, setHighlightOverlaps] = useState<boolean>(false);
+    const [isRunning, setIsRunning] = useState<boolean>(false);
 
     const updateTemplate = (e:React.ChangeEvent<{ value: unknown }>) =>{
       const templateName: TemplateName = e.target.value as TemplateName;
@@ -74,18 +75,24 @@ export default function ({setRecursionTree}: Props) {
     };
 
     const run = () =>{
-        try {
-            const func = compileInput(input, call, language);
-            const tree = executeJsFunction(func, useMemo, highlightOverlaps);
-            setRecursionTree(tree);
-            setError('');
-        }
-        catch (e) {
-            setError('Execution failed!');
-            if(e.message.includes('deep')){
-                setError('Too many recursive calls!');
-            }
-        }
+        if(isRunning) return;
+        setIsRunning(true);
+
+        compileInput(input, call, language)
+            .then(func => executeAndGetTree(func, useMemo, highlightOverlaps))
+            .then(tree => {
+                setRecursionTree(tree);
+                setError('');
+                setIsRunning(false);
+            })
+            .catch(e => {
+                console.log(e);
+                setError('Execution failed!');
+                setIsRunning(false);
+                if(e.message.includes('deep')){
+                    setError('Too many recursive calls!');
+                }
+            });
     };
 
     return(
