@@ -92,6 +92,9 @@ export default function ({setRecursionTree}: Props) {
                 if(e.message.includes('deep')){
                     setError('Too many recursive calls!');
                 }
+                if(e.message.includes('not defined')){
+                    setError('Unsupported syntax was used!');
+                }
             });
     };
 
@@ -146,6 +149,7 @@ export default function ({setRecursionTree}: Props) {
                             <IconButton
                                 aria-label="toggle password visibility"
                                 onClick={()=>run()}
+                                disabled={isRunning}
                                 edge="end"
                             >
                                 <PlayCircleFilledIcon/>

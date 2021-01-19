@@ -25,7 +25,8 @@ export default function Footer() {
                     {'Copyright © '}
                     {'Smart kids Inc.'}
                     {new Date().getFullYear()}
-                    {'.'}
+                    {'.  '}
+                    <a style={{color:'gray'}} href={'https://github.com/boroma4/dpst'}>Github</a>
                 </Typography>
             </Container>
         </footer>

@@ -1,12 +1,12 @@
 import {FunctionData, LangName, Variable} from "../types/types";
 import {requestPythonToJs} from "./TranslationRequest";
 
+const legalSymbols = [' ', '+', '-', '(', '*'];
+
 export async function compileInput(inputCode: string, inputCall: string, language: LangName): Promise<FunctionData> {
 
-    let functionName = 'ewwwwwwwewaeaw';
-
     if(language === 'javascript'){
-        functionName = inputCode.substring(inputCode.indexOf('function') + 'function'.length + 1, inputCode.indexOf('('));
+        let functionName = inputCode.substring(inputCode.indexOf('function') + 'function'.length + 1, inputCode.indexOf('('));
         functionName = ` ${functionName}(`;
         inputCall = inputCall.replace(functionName, ' fn(');
 
@@ -14,7 +14,7 @@ export async function compileInput(inputCode: string, inputCall: string, languag
             inputCode = inputCode.replace(functionName, ' fn(');
         }
     }else if(language === 'python'){
-        functionName = inputCode.substring(inputCode.indexOf('def') + 'def'.length + 1, inputCode.indexOf('('));
+        let functionName = inputCode.substring(inputCode.indexOf('def') + 'def'.length + 1, inputCode.indexOf('('));
         functionName = ` ${functionName}:`;
         inputCall = inputCall.replace(functionName, ' fn:');
 
@@ -23,6 +23,11 @@ export async function compileInput(inputCode: string, inputCall: string, languag
         }
         const response = await requestPythonToJs(inputCode);
         inputCode = response.fn;
+
+        for (const symbol of legalSymbols){
+            inputCode = replaceMathFunctions(inputCode, `${symbol}min(`, `${symbol}Math.min(...`);
+            inputCode = replaceMathFunctions(inputCode, `${symbol}max(`, `${symbol}Math.max(...`);
+        }
     }
 
     return group(inputCode, inputCall, []);
@@ -90,3 +95,9 @@ const betweenParentesis = (s: string) => {
     return content === '' ? [] : content.split(',')
 };
 
+const replaceMathFunctions = (code: string, wrong: string, correct: string) =>{
+    while(code.includes(wrong)){
+        code = code.replace(wrong, correct);
+    }
+    return code;
+};
