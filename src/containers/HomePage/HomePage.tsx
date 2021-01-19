@@ -3,6 +3,7 @@ import './HomePage.css'
 import {Button, Typography} from "@material-ui/core";
 import SubdirectoryArrowRightSharpIcon from '@material-ui/icons/SubdirectoryArrowRightSharp';
 import {useHistory} from "react-router-dom";
+import {MAIN_PATH} from "../../App";
 
 export default function () {
     const history = useHistory();
@@ -14,7 +15,7 @@ export default function () {
             <h3>
                 Here we will teach you all about dynamic programming.
             </h3>
-            <Button onClick={()=>history.push('/theory')} variant="contained" color="primary" size="large" style={{padding:20}}>
+            <Button onClick={()=>history.push(MAIN_PATH + '/theory')} variant="contained" color="primary" size="large" style={{padding:20}}>
                 <text>Click here to start with Theory</text><SubdirectoryArrowRightSharpIcon style={{margin:5}}/>
             </Button>
            </Typography>

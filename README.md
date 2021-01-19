@@ -3,9 +3,9 @@
 - [x] Code execution
 - [x] Recusrion tree drawing
 - [x] Automatic memoization
-- [ ] Highlight overlapping calls
+- [x] Highlight overlapping calls
 - [ ] Example templates (Fibonacci, Edit Distance, etc..)
-- [ ] Python support
+- [x] Python support
 - [ ] Theory page
 - [ ] Poster
 

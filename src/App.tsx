@@ -14,8 +14,8 @@ import {
 } from "react-router-dom";
 import data from "./components/VisualizerComponents/data";
 import {TreeNode} from "./containers/VisualizerPage/Types/TreeNode";
-import {Container} from "@material-ui/core";
 
+export const MAIN_PATH = '/dpst';
 
 function App() {
   return (
@@ -23,13 +23,13 @@ function App() {
       <Router>
           <Header/>
               <Switch>
-                  <Route path="/visualizer" exact={true}>
+                  <Route path={MAIN_PATH + "/visualizer"} exact={true}>
                       <VisualizerPage  tree={data as unknown as TreeNode}/>
                   </Route>
-                  <Route path="/theory" exact={true}>
+                  <Route path={MAIN_PATH + "/theory"} exact={true}>
                       <TheoryPage />
                   </Route>
-                  <Route path="/" exact={true}>
+                  <Route path={MAIN_PATH} exact={true}>
                       <HomePage />
                   </Route>
                   <Route>
