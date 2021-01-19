@@ -8,18 +8,17 @@ import {MAIN_PATH} from "../../App";
 export default function () {
     const history = useHistory();
     return(
-        <Typography>
-            <h1>
-                Welcome to self-study guide to Dynamic Programming!
-            </h1>
-            <h3>
-                Here we will teach you all about dynamic programming.
-            </h3>
-            <Button onClick={()=>history.push(MAIN_PATH + '/theory')} variant="contained" color="primary" size="large" style={{padding:20}}>
-                <text>Click here to start with Theory</text><SubdirectoryArrowRightSharpIcon style={{margin:5}}/>
-            </Button>
-           </Typography>
-
+            <Typography>
+                <h1>
+                    Welcome to self-study guide to Dynamic Programming!
+                </h1>
+                <h3>
+                    Here we will teach you all about dynamic programming.
+                </h3>
+                <Button onClick={()=>history.push(MAIN_PATH + '/theory')} variant="contained" color="primary" size="large" style={{padding:20}}>
+                    <text>Click here to start with Theory</text><SubdirectoryArrowRightSharpIcon style={{margin:5}}/>
+                </Button>
+            </Typography>
     )
 }
 

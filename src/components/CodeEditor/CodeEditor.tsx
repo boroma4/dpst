@@ -33,7 +33,7 @@ export default function ({language, input, setInput}: Props) {
                 highlightActiveLine={true}
                 value={input}
                 setOptions={{
-                    enableBasicAutocompletion: false,
+                    enableBasicAutocompletion: true,
                     enableLiveAutocompletion: true,
                     enableSnippets: false,
                     showLineNumbers: true,

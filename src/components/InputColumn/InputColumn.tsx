@@ -39,6 +39,10 @@ const useStyles = makeStyles((theme: Theme) =>
         error: {
             color: 'red',
             fontSize: 'small'
+        },
+        warning: {
+            color: '#ff9966',
+            fontSize: 'small'
         }
     }),
 );
@@ -158,6 +162,7 @@ export default function ({setRecursionTree}: Props) {
                     }
                     />
                 <div className={classes.error}>{error}</div>
+                {!error && <div className={classes.warning}>Don't run any suspicious code, it will be executed in your browser!</div>}
             </FormGroup>
         </div>
     )
