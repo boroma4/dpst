@@ -1,7 +1,7 @@
 import {FunctionData} from "../types/types";
 import {buildRecursionTree} from "./TreeBuilding";
 
-export function executeJsFunction(this:any, fnData: FunctionData, useMemo: boolean): any{
+export function executeJsFunction(this:any, fnData: FunctionData, useMemo: boolean, highlightOverlaps: boolean): any{
 
     // pure magic
     var fn: Function, _: Function;
@@ -54,7 +54,7 @@ export function executeJsFunction(this:any, fnData: FunctionData, useMemo: boole
     const paramsValues = fnData.params.map((param) => eval(param.value));
     if (paramsValues.length > 0) result = fn(...paramsValues);
 
-    return buildRecursionTree(parents);
+    return buildRecursionTree(parents, highlightOverlaps);
 }
 
 const parseFunction = (fnData: FunctionData) => {

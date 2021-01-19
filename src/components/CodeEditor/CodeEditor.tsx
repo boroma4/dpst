@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/mode-javascript";
@@ -22,7 +22,7 @@ export default function ({language, input, setInput}: Props) {
     return(
         <>
             <AceEditor
-                style={{width:'auto', height: windowSize.height / 1.8}}
+                style={{width:'auto', height: windowSize.height * 0.45}}
                 placeholder="Write some code"
                 mode={language}
                 theme="monokai"

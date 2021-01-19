@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             flexGrow: 1,
-            height: '10vh'
+            height:'48px' // from app bar definition
         },
         bar: {
             backgroundColor: 'azure',
