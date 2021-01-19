@@ -31,6 +31,11 @@ export function executeJsFunction(this:any, fnData: FunctionData, useMemo: boole
         }
 
         callStack.push(nodes++);
+
+        if(nodes > 150){
+            throw new Error('Recursion too deep!');
+        }
+
         const result = userFn.apply(self, args);
 
         for (let key of Object.keys(parents)){

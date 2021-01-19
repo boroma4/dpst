@@ -35,6 +35,10 @@ const useStyles = makeStyles((theme: Theme) =>
         formControl: {
             margin: theme.spacing(1),
             minWidth: 120,
+        },
+        error: {
+            color: 'red',
+            fontSize: 'small'
         }
     }),
 );
@@ -49,6 +53,7 @@ export default function ({setRecursionTree}: Props) {
     const [input, setInput] = useState<string>(fnCode);
     const [call, setCall] = useState<string>(fnCall);
     const [language, setLanguage] = useState<LangName>('javascript');
+    const [error, setError] = useState<string>('');
     const [useMemo, setUseMemo] = useState<boolean>(false);
     const [highlightOverlaps, setHighlightOverlaps] = useState<boolean>(false);
 
@@ -73,10 +78,13 @@ export default function ({setRecursionTree}: Props) {
             const func = compileInput(input, call, language);
             const tree = executeJsFunction(func, useMemo, highlightOverlaps);
             setRecursionTree(tree);
+            setError('');
         }
         catch (e) {
-            alert('broken function bro');
-            console.log(e)
+            setError('Execution failed!');
+            if(e.message.includes('deep')){
+                setError('Too many recursive calls!');
+            }
         }
     };
 
@@ -124,6 +132,7 @@ export default function ({setRecursionTree}: Props) {
                     type={'text'}
                     value={call}
                     onChange={(e)=>setCall(e.target.value)}
+                    error={Boolean(error)}
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton
@@ -136,6 +145,7 @@ export default function ({setRecursionTree}: Props) {
                         </InputAdornment>
                     }
                     />
+                <div className={classes.error}>{error}</div>
             </FormGroup>
         </div>
     )
