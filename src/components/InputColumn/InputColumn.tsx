@@ -118,8 +118,8 @@ export default function ({setRecursionTree}: Props) {
                 console.log(e);
                 setError('Execution failed!');
                 setIsRunning(false);
-                if(e.message.includes('deep')){
-                    setError('Too many recursive calls!');
+                if(e.message.includes('tree too big!')){
+                    setError('Recursion tree too big!');
                 }
                 if(e.message.includes('not defined')){
                     setError('Unsupported syntax was used!');
@@ -148,6 +148,7 @@ export default function ({setRecursionTree}: Props) {
                     <MenuItem value={'Fibonacci'}>Fibonacci</MenuItem>
                     <MenuItem value={'LCS'}>LCS</MenuItem>
                     <MenuItem value={'Coin Change'}>Coin Change</MenuItem>
+                    <MenuItem value={'0-1 Knapsack'}>0-1 Knapsack</MenuItem>
                     <MenuItem value={'Custom'}>Custom</MenuItem>
                 </Select>
             </FormControl>

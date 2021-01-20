@@ -2,6 +2,7 @@ import {FunctionData} from "../types/types";
 import {buildRecursionTree} from "./TreeBuilding";
 import {TreeNode} from "../containers/VisualizerPage/Types/TreeNode";
 
+const MAX_RECURSION_CALLS = 200;
 
 export function executeAndGetTree(this:any, fnData: FunctionData, useMemo: boolean, highlightOverlaps: boolean): TreeNode{
 
@@ -34,8 +35,8 @@ export function executeAndGetTree(this:any, fnData: FunctionData, useMemo: boole
 
         callStack.push(nodes++);
 
-        if(nodes > 150){
-            throw new Error('Recursion too deep!');
+        if(nodes > MAX_RECURSION_CALLS){
+            throw new Error('Recursion tree too big!');
         }
 
         const result = userFn.apply(self, args);
