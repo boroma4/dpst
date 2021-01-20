@@ -1,13 +1,21 @@
 import React, {FunctionComponent, useState} from 'react';
 import {
+    Button,
     createStyles,
     Drawer,
     List,
     ListItem, ListItemText,
     makeStyles,
-    Theme, Toolbar, Typography,
+    Theme, Toolbar,
 } from "@material-ui/core";
 import TheoryBank from "./TheoryBank";
+import ReactMarkdown from "react-markdown";
+import RemarkMathPlugin from 'remark-math';
+import { BlockMath, InlineMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
+import SubdirectoryArrowRightSharpIcon from "@material-ui/icons/SubdirectoryArrowRightSharp";
+import {MAIN_PATH} from "../../App";
+import { useHistory } from 'react-router-dom';
 
 
 interface OwnProps {}
@@ -21,6 +29,10 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
+            textAlign:'left',
+            paddingBottom:'4vh',
+            fontSize:"2vh"
+
         },
         drawer: {
             width: drawerWidth,
@@ -34,14 +46,16 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         content: {
             flexGrow: 1,
-            padding: theme.spacing(3),
+            padding: theme.spacing(3)
         },
     }),
 );
 
 const TheoryPage: FunctionComponent<Props> = (props) => {
     const classes = useStyles();
-    const [chosenPage, setChosenPage] = useState<string>('1. Problems');
+    const [chosenPage, setChosenPage] = useState<string>('1. Introduction');
+    const history = useHistory();
+    const sendToVisualizer = <Button onClick={()=>history.push(MAIN_PATH + '/visualizer')} variant="contained" color="primary" size="large" style={{padding:20}}>Go to visualizer<SubdirectoryArrowRightSharpIcon style={{margin:5}}/></Button> ;
   return (
       <div className={classes.root} >
           <Drawer
@@ -63,12 +77,18 @@ const TheoryPage: FunctionComponent<Props> = (props) => {
 
               </div>
           </Drawer>
-          <main className={classes.content}>
-              <Toolbar />
-              <Typography paragraph>
-                  {(TheoryBank as any)[chosenPage]}
-              </Typography>
-          </main>
+          <div className={classes.content}>
+              <h3>{chosenPage}</h3>
+              <ReactMarkdown
+                  children={(TheoryBank as any)[chosenPage][0]}
+                  escapeHtml={false}
+                  plugins={[
+                      RemarkMathPlugin
+                  ]}
+                  renderers={{math:({ value }) => <BlockMath>{value}</BlockMath>,inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>}}
+              />
+              {((TheoryBank as any)[chosenPage].length >1)? (sendToVisualizer) : (<></>)}
+          </div>
   </div>);
 };
 
