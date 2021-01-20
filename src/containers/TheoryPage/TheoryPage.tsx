@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             textAlign:'left',
             paddingBottom:'4vh',
-            fontSize:"2vh"
+            fontSize:"2.5vh",
+            maxWidth:"75vw"
 
         },
         drawer: {
