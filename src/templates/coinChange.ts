@@ -11,12 +11,14 @@ export const CoinChange: ExampleTemplate = {
   if (s < 0) return Infinity;
   
   let ans = Infinity;
+  
   for (const coin of coins)
     ans = Math.min(
       ans,
       1 + fn(s - coin)
     );
-  return ans;   
+  return 
+  ans;   
 `
     },
     'python':{
@@ -32,11 +34,13 @@ export const CoinChange: ExampleTemplate = {
     return float('inf')
   
   ans = float('inf')
+  
   for coin in coins:
     ans = min(
       ans,
       1 + fn(s - coin)
     )
+    
   return ans   
 `
     }

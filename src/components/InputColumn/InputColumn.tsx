@@ -149,6 +149,7 @@ export default function ({setRecursionTree}: Props) {
                     <MenuItem value={'LCS'}>LCS</MenuItem>
                     <MenuItem value={'Coin Change'}>Coin Change</MenuItem>
                     <MenuItem value={'0-1 Knapsack'}>0-1 Knapsack</MenuItem>
+                    <MenuItem value={'Edit distance'}>Edit distance</MenuItem>
                     <MenuItem value={'Custom'}>Custom</MenuItem>
                 </Select>
             </FormControl>

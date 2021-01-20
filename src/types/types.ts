@@ -8,7 +8,7 @@ export type FunctionData = {
 }
 
 export type Variable = { name: string; value: string }
-export type TemplateName = 'Fibonacci' | 'Custom' | 'LCS' | 'Coin Change' | '0-1 Knapsack';
+export type TemplateName = 'Fibonacci' | 'Custom' | 'LCS' | 'Coin Change' | '0-1 Knapsack' | 'Edit distance';
 
 export type ExampleTemplate = {
     javascript: FunctionData,
