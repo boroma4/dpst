@@ -3,7 +3,7 @@ import {requestPythonToJs} from "./TranslationRequest";
 
 const legalSymbols = [' ', '+', '-', '(', '*'];
 
-export async function compileInput(inputCode: string, inputCall: string, language: LangName): Promise<FunctionData> {
+export async function compileInput(inputCode: string, inputCall: string, inputVariables: Variable[], language: LangName): Promise<FunctionData> {
 
     if(language === 'javascript'){
         let functionName = inputCode.substring(inputCode.indexOf('function') + 'function'.length + 1, inputCode.indexOf('('));
@@ -15,22 +15,27 @@ export async function compileInput(inputCode: string, inputCall: string, languag
         }
     }else if(language === 'python'){
         let functionName = inputCode.substring(inputCode.indexOf('def') + 'def'.length + 1, inputCode.indexOf('('));
-        functionName = ` ${functionName}:`;
-        inputCall = inputCall.replace(functionName, ' fn:');
+        functionName = ` ${functionName}(`;
+        inputCall = inputCall.replace(functionName, ' fn(');
 
-        while(inputCode.includes(functionName) && functionName !== ' fn:'){
-            inputCode = inputCode.replace(functionName, ' fn:');
+        while(inputCode.includes(functionName) && functionName !== ' fn('){
+            inputCode = inputCode.replace(functionName, ' fn(');
         }
         const response = await requestPythonToJs(inputCode);
         inputCode = response.fn;
 
         for (const symbol of legalSymbols){
-            inputCode = replaceMathFunctions(inputCode, `${symbol}min(`, `${symbol}Math.min(...`);
-            inputCode = replaceMathFunctions(inputCode, `${symbol}max(`, `${symbol}Math.max(...`);
+            inputCode = replaceMathFunctions(inputCode, `${symbol}min([`, `${symbol}Math.min(...[`);
+            inputCode = replaceMathFunctions(inputCode, `${symbol}max([`, `${symbol}Math.max(...[`);
+            inputCode = replaceMathFunctions(inputCode, `${symbol}min(`, `${symbol}Math.min(`);
+            inputCode = replaceMathFunctions(inputCode, `${symbol}max(`, `${symbol}Math.max(`);
+            inputCode = replaceMathFunctions(inputCode, `${symbol}float("inf")`, `${symbol}Infinity`);
+            inputCode = replaceMathFunctions(inputCode, `${symbol}float('inf')`, `${symbol}Infinity`);
         }
+        inputCode = fixVariables(inputCode);
     }
 
-    return group(inputCode, inputCall, []);
+    return group(inputCode, inputCall, inputVariables);
 }
 
 
@@ -100,4 +105,27 @@ const replaceMathFunctions = (code: string, wrong: string, correct: string) =>{
         code = code.replace(wrong, correct);
     }
     return code;
+};
+
+const fixVariables = (code: string): string =>{
+    let words = code.split(" ");
+    let res = [];
+    for (const word of words){
+        res.push(...word.split('\n'));
+    }
+    words = res;
+    let registeredVars = new Set();
+
+    for(let i = 0; i < words.length; i++){
+        let word = words[i];
+        word = word.replace(/[^a-zA-Z0-9]+/g, "").trim();
+        if(word === 'var'){
+            if(registeredVars.has(words[i+1])){
+                words.splice(i, 1);
+                i--;
+            }
+            registeredVars.add(words[i+1])
+        }
+    }
+    return words.join(' ');
 };

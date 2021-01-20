@@ -2,7 +2,7 @@ import {ExampleTemplate} from "../types/types";
 
 export const LCS: ExampleTemplate = {
     'javascript':{
-        params: [{name:'str1', value: '\"dab\"'},{name:'str2', value: '\"cb\"'},{name:'i', value: '3'},{name:'j', value: '2'},{name:'count',value:'0'}],
+        params: [{name:'str1', value: '\"dab\"'},{name:'str2', value: '\"ab\"'},{name:'i', value: '3'},{name:'j', value: '2'},{name:'count',value:'0'}],
         body: ` 
 \t\tif (i <= 0 || j <= 0)
 \t\t\treturn count;

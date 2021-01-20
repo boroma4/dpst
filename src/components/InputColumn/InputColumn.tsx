@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import CodeEditor from "../CodeEditor/CodeEditor";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
-import {LangName, TemplateName} from "../../types/types";
+import {LangName, TemplateName, Variable} from "../../types/types";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
@@ -17,6 +17,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {getKeyValue, Templates} from "../../templates/templates";
+import TextField from "@material-ui/core/TextField";
 
 interface Props {
     setRecursionTree: Function;
@@ -43,7 +44,15 @@ const useStyles = makeStyles((theme: Theme) =>
         warning: {
             color: '#ff9966',
             fontSize: 'small'
-        }
+        },
+        gvName: {
+            margin: theme.spacing(1),
+            width: '10ch',
+        },
+        gvVal: {
+            margin: theme.spacing(1),
+            width: '15ch',
+        },
     }),
 );
 
@@ -56,6 +65,7 @@ export default function ({setRecursionTree}: Props) {
     const [template, setTemplate] = useState<TemplateName>('Fibonacci');
     const [input, setInput] = useState<string>(fnCode);
     const [call, setCall] = useState<string>(fnCall);
+    const [vars, setVars] = useState<Variable[]>([{name:'', value:''},{name:'', value:''}]);
     const [language, setLanguage] = useState<LangName>('javascript');
     const [error, setError] = useState<string>('');
     const [useMemo, setUseMemo] = useState<boolean>(false);
@@ -64,25 +74,40 @@ export default function ({setRecursionTree}: Props) {
 
     const updateTemplate = (e:React.ChangeEvent<{ value: unknown }>) =>{
       const templateName: TemplateName = e.target.value as TemplateName;
-      const {fnCode, fnCall} = ungroup(getKeyValue(templateName)(Templates)[language], language);
+      const {fnCode, fnCall, fnVars} = ungroup(getKeyValue(templateName)(Templates)[language], language);
       setInput(fnCode);
       setCall(fnCall);
       setTemplate(templateName);
+      setVars(fnVars);
     };
 
     const updateLanguage = (e:React.ChangeEvent<{ value: unknown }>) =>{
         const language: LangName = e.target.value as LangName;
-        const {fnCode, fnCall} = ungroup(getKeyValue(template)(Templates)[language], language);
+        const {fnCode, fnCall, fnVars} = ungroup(getKeyValue(template)(Templates)[language], language);
         setLanguage(language);
         setInput(fnCode);
         setCall(fnCall);
+        setVars(fnVars);
+    };
+
+    const updateVar = (event: ChangeEvent<HTMLTextAreaElement|HTMLInputElement>, number: number, isName: boolean) => {
+        setVars(prev =>{
+            const copy = [...prev];
+            let toUpdate = copy[number];
+            if(isName){
+                toUpdate.name = event.target.value;
+            }else{
+                toUpdate.value = event.target.value;
+            }
+            return copy;
+        })
     };
 
     const run = () =>{
         if(isRunning) return;
         setIsRunning(true);
 
-        compileInput(input, call, language)
+        compileInput(input, call, vars, language)
             .then(func => executeAndGetTree(func, useMemo, highlightOverlaps))
             .then(tree => {
                 setRecursionTree(tree);
@@ -122,6 +147,7 @@ export default function ({setRecursionTree}: Props) {
                 >
                     <MenuItem value={'Fibonacci'}>Fibonacci</MenuItem>
                     <MenuItem value={'LCS'}>LCS</MenuItem>
+                    <MenuItem value={'Coin Change'}>Coin Change</MenuItem>
                     <MenuItem value={'Custom'}>Custom</MenuItem>
                 </Select>
             </FormControl>
@@ -140,6 +166,40 @@ export default function ({setRecursionTree}: Props) {
                 input={input}
                 setInput={setInput}
             />
+            <div style={{margin:'5px'}}><b>Global variables</b></div>
+            <div>
+                <TextField
+                    value={vars[0].name}
+                    variant="outlined"
+                    className={classes.gvName}
+                    size='small'
+                    onChange={(e)=> updateVar(e, 0, true)}
+                />
+                <TextField
+                    value={vars[0].value}
+                    className={classes.gvVal}
+                    variant="outlined"
+                    size={'small'}
+                    onChange={(e)=> updateVar(e, 0, false)}
+
+                />
+            </div>
+            <div>
+                <TextField
+                    value={vars[1].name}
+                    variant="outlined"
+                    className={classes.gvName}
+                    size='small'
+                    onChange={(e)=> updateVar(e, 1, true)}
+                />
+                <TextField
+                    value={vars[1].value}
+                    className={classes.gvVal}
+                    variant="outlined"
+                    size={'small'}
+                    onChange={(e)=> updateVar(e, 1, false)}
+                />
+            </div>
             <FormGroup row className={classes.runForm}>
                 <InputLabel htmlFor="function-call">Function call</InputLabel>
                 <OutlinedInput
