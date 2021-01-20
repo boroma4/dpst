@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {
     Button,
     createStyles,
@@ -16,6 +16,8 @@ import 'katex/dist/katex.min.css';
 import SubdirectoryArrowRightSharpIcon from "@material-ui/icons/SubdirectoryArrowRightSharp";
 import {MAIN_PATH} from "../../App";
 import { useHistory } from 'react-router-dom';
+import FadeIn from 'react-fade-in';
+
 
 
 interface OwnProps {}
@@ -52,44 +54,48 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
+
 const TheoryPage: FunctionComponent<Props> = (props) => {
     const classes = useStyles();
     const [chosenPage, setChosenPage] = useState<string>('1. Introduction');
     const history = useHistory();
     const sendToVisualizer = <Button onClick={()=>history.push(MAIN_PATH + '/visualizer')} variant="contained" color="primary" size="large" style={{padding:20}}>Go to visualizer<SubdirectoryArrowRightSharpIcon style={{margin:5}}/></Button> ;
+
   return (
       <div className={classes.root} >
-          <Drawer
-              className={classes.drawer}
-              variant="permanent"
-              classes={{
-                  paper: classes.drawerPaper,
-              }}
-          >
-              <Toolbar />
-              <div className={classes.drawerContainer}>
-                  <List>
-                      {topics.map((text, index) => (
-                          <ListItem button key={text} onClick={()=>{console.log(index);setChosenPage(text)}}>
-                              <ListItemText primary={text} />
-                          </ListItem>
-                      ))}
-                  </List>
+              <Drawer
+                  className={classes.drawer}
+                  variant="permanent"
+                  classes={{
+                      paper: classes.drawerPaper,
+                  }}
+              >
+                  <Toolbar />
+                  <div className={classes.drawerContainer}>
+                      <List>
+                          {topics.map((text, index) => (
+                              <ListItem button style={(text === chosenPage)? ({backgroundColor:"#3f51b5",color:"white"}) : ({})} key={text} onClick={()=>{console.log(index);setChosenPage(text)}}>
+                                  <ListItemText primary={text} />
+                              </ListItem>
+                          ))}
+                      </List>
 
+                  </div>
+              </Drawer>
+          <FadeIn>
+              <div className={classes.content}>
+                  <h3>{chosenPage}</h3>
+                  <ReactMarkdown
+                      children={(TheoryBank as any)[chosenPage][0]}
+                      escapeHtml={false}
+                      plugins={[
+                          RemarkMathPlugin
+                      ]}
+                      renderers={{math:({ value }) => <BlockMath>{value}</BlockMath>,inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>}}
+                  />
+                  {((TheoryBank as any)[chosenPage].length >1)? (sendToVisualizer) : (<></>)}
               </div>
-          </Drawer>
-          <div className={classes.content}>
-              <h3>{chosenPage}</h3>
-              <ReactMarkdown
-                  children={(TheoryBank as any)[chosenPage][0]}
-                  escapeHtml={false}
-                  plugins={[
-                      RemarkMathPlugin
-                  ]}
-                  renderers={{math:({ value }) => <BlockMath>{value}</BlockMath>,inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>}}
-              />
-              {((TheoryBank as any)[chosenPage].length >1)? (sendToVisualizer) : (<></>)}
-          </div>
+          </FadeIn>
   </div>);
 };
 
