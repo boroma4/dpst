@@ -17,8 +17,7 @@ export const CoinChange: ExampleTemplate = {
       ans,
       1 + fn(s - coin)
     );
-  return 
-  ans;   
+  return ans;   
 `
     },
     'python':{

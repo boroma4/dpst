@@ -17,39 +17,36 @@ export function executeAndGetTree(this:any, fnData: FunctionData, useMemo: boole
     let nodes = 0;
 
     function run(...args: any[]): any{
+
+        if(nodes > MAX_RECURSION_CALLS){
+            throw new Error('Recursion tree too big!');
+        }
+
         const currentKey = JSON.stringify(args);
         parents[nodes] = {
             parent: callStack.length > 0 ? callStack[callStack.length - 1] : undefined,
             nodeValue: currentKey
         };
 
-        if(useMemo && memo[currentKey]){
-            for (let key of Object.keys(parents)){
-                let node = parents[key];
-                if(node.nodeValue === currentKey){
-                    node.nodeValue += `=>${memo[currentKey]}`
-                }
-            }
-            return memo[currentKey]
-        }
-
         callStack.push(nodes++);
 
-        if(nodes > MAX_RECURSION_CALLS){
-            throw new Error('Recursion tree too big!');
+        let result;
+
+        if(useMemo && memo[currentKey] === undefined){
+            memo[currentKey] = userFn.apply(self, args);
         }
 
-        const result = userFn.apply(self, args);
+        if(useMemo){
+            result = memo[currentKey];
+        }else{
+            result = userFn.apply(self, args);
+        }
 
         for (let key of Object.keys(parents)){
             let node = parents[key];
             if(node.nodeValue === currentKey){
                 node.nodeValue += `=>${result}`
             }
-        }
-
-        if(useMemo){
-            memo[currentKey] = result;
         }
 
         callStack.pop();
