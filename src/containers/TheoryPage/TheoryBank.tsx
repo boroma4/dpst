@@ -91,11 +91,12 @@ export default  {
     '3. Dynamic Programming':[
         "In layman's term, Dynamic Programming encourages breaking down an optimization problem into simpler subproblems, and storing the solution to each subproblem, so that every subproblem is solved only once. The recursive solution, as observed with the Fibonacci numbers, has repeated calls for same inputs calling for an optimization using Dynamic Programming. The optimization leads to a significant reduction in time complexity from exponential order growth to linear time. "
     ],
-    '3.1. Explanation':[
-        "Donec ut pulvinar velit. Pellentesque varius tellus et sem pharetra, at mollis turpis ullamcorper. Nulla vehicula ac odio nec aliquam. Ut nec dolor vel augue consequat ultrices mattis vitae lectus. Phasellus elementum leo lorem, vitae efficitur elit dignissim tempus. Praesent sit amet faucibus leo. Mauris maximus arcu dapibus faucibus scelerisque."
-    ],
-    '3.2. Common uses and examples':[
-        "The recursive Fibonacci Number yields exponential time complexity, so how do we get it running with linear time complexity? The trick is to calculate the Fibonacci value for n just once by storing its value and accessing the stored value for every subsequent occurrence of n. The process described earlier is also known as memoization. The top-down dynamic programming approach to solve Fibonacci using memoization is more or less the same as the recursive solution but we use a memo to store the result of the nth value when called for the first time. The Python code is as follows:\n" +
+    '3.1. Common uses and examples':[
+        "The recursive Fibonacci Number yields exponential time complexity, so how do we get it running with linear time complexity?" +
+        "\n" +
+        "\n#### Top-down approach:" +
+        "\n" +
+        "\n The trick is to calculate the Fibonacci value for n just once by storing its value and accessing the stored value for every subsequent occurrence of n. The process described earlier is also known as memoization. The top-down dynamic programming approach to solve Fibonacci using memoization is more or less the same as the recursive solution but we use a memo to store the result of the nth value when called for the first time. The Python code is as follows:\n" +
         "\n" +
         "```Python\n" +
         "\n" +
@@ -111,9 +112,33 @@ export default  {
         "\n" +
         "- Recursive call tree is easier to follow as each subproblem are not solved multiple times\n" +
         "\n" +
-        "- The redundant and waster computations are removed thanks to memoization "
+        "- The redundant and waster computations are removed thanks to memoization " +
+        "\n" +
+        "\n #### Bottom-up approach:" +
+         "\n" +
+          "\n This approach is a bit more complex to think of than the top-down or naive approach. The key to understand it is to think of the problem as lego pieces. Well, except for we, as programmers, have to make these lego pieces ourselves. Since we all like Fibonacci numbers so much, we will use this example again. \n\nWe know that each next number is the sum of previous two numbers. We can make it so, that the first few cases are already computed and stored in a variable, instead of using a whole array for this. Consider the following Python script:" +
+        "\n" +
+        "```Python\n" +
+        "\n" +
+        "def fibonacciVal(n):  \n" +
+        "    if n == 0 or n == 1:\n" +
+        "       return n  \n" +
+        "    a = 0   \n" +
+        "    b = 1    \n" +
+        "    for i in range(2, n+1):    \n" +
+        "        temp = a + b  \n" +
+        "        a = b\n" +
+        "        b = temp\n" +
+        "    return b\n" +
+        "```\n" +
+        "\n" +
+        "This approach is very elegant, but sometimes hard to grasp. Think of problem as little granular pieces: you solve small sub-problems and then use the result later on solving other problems, composed out of these small ones."
     ],
-    '3.3. Analysis':[
-        "Memoization leads to a more efficient algorithm and our top-down Fibonacci number solution using memoization reduces the time complexity to the number of nodes in the recursive call tree, i.e., linear time $O(n)$. Also, the space complexity of the solution is $O(n)$ corresponding to the number of levels of the recursive calls n. The same principles apply to the LCS problem and the solution plus the recursive call tree can be observed on our toolbox. "
+    '3.2. Analysis':[
+        "Memoization leads to a more efficient algorithm and our top-down Fibonacci number solution using memoization reduces the time complexity to the number of nodes in the recursive call tree, i.e., linear time $O(n)$. Also, the space complexity of the solution is $O(n)$ corresponding to the number of levels of the recursive calls n. " +
+        "\n" +
+        "\n As to what we had in bottom-up approach, the time complexity is $O(n)$ and space complexity would be $O(1)$. This is the best we can achieve for Fibonacci numbers in any of the cases.\n" +
+        "\n Dynamic programming allows us to speed up the computations significantly and save space at the same time. Generally, as you encounter more difficult problems in dynamic programming their complexity will grow (for example, one of the popular algorithms Edit Distance, for finding the number of operations needed to convert one string into another string can be solved with dynamic programming in $O(m*n)$), however this would still yield better performance, than other algorithms.\n\n The whole point of dynamic programming is that it is dynamic - the program builds itself up starting from the smallest input, and reaches the level we want it to reach." +
+        "Similar principles apply to the LCS problem and many more. This problem plus other problems can be visualized with the help of recursive tree on our toolbox. ", true
     ]
 }
