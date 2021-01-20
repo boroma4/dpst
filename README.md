@@ -4,10 +4,10 @@
 - [x] Recursion tree drawing
 - [x] Automatic memoization
 - [x] Highlight overlapping calls
-- [ ] Example templates (Fibonacci, Edit Distance, etc..)
+- [x] Example templates (Fibonacci, Edit Distance, etc..)
 - [x] Python support
-- [ ] Theory page
-- [ ] Poster
+- [x] Theory page
+- [x] Poster
 
 https://boroma4.github.io/dpst/
 

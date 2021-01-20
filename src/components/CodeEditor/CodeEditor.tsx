@@ -17,12 +17,10 @@ interface Props{
 
 export default function ({language, input, setInput}: Props) {
 
-    const windowSize = useWindowSize();
-
     return(
         <>
             <AceEditor
-                style={{width:'auto', height: windowSize.height * 0.45}}
+                style={{width:'auto', height: '45vh'}}
                 placeholder="Write some code"
                 mode={language}
                 theme="monokai"

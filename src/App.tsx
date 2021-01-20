@@ -6,8 +6,6 @@ import VisualizerPage from "./containers/VisualizerPage/VisualizerPage";
 import TheoryPage from "./containers/TheoryPage/TheoryPage";
 import HomePage from "./containers/HomePage/HomePage";
 import ErrorPage from "./containers/ErrorPage/ErrorPage";
-import Swal from 'sweetalert2';
-import {isMobileOnly} from "react-device-detect";
 
 import {
     BrowserRouter as Router,
@@ -20,16 +18,6 @@ import {TreeNode} from "./containers/VisualizerPage/Types/TreeNode";
 export const MAIN_PATH = '/dpst';
 
 function App() {
-
-    useEffect(()=>{
-        if(isMobileOnly){
-            Swal.fire({
-                icon: 'warning',
-                title: 'WARNING',
-                text: 'Mobile usage is currently not recommended!',
-            })
-        }
-    }, []);
 
   return (
     <div className="App">

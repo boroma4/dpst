@@ -57,10 +57,9 @@ export function executeAndGetTree(this:any, fnData: FunctionData, useMemo: boole
     }
 
     fn = run;
-    let result = NaN;
     // eslint-disable-next-line
     const paramsValues = fnData.params.map((param) => eval(param.value));
-    if (paramsValues.length > 0) result = fn(...paramsValues);
+    fn(...paramsValues);
 
     return buildRecursionTree(parents, highlightOverlaps);
 }
@@ -78,7 +77,6 @@ const parseFunction = (fnData: FunctionData) => {
     ${varsDeclaration}
     ${fnData.body}
   }`;
-
     return fnDeclaration
 };
 

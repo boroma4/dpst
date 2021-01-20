@@ -23,9 +23,9 @@ export default function Footer() {
             <Container maxWidth="lg">
                 <Typography variant="body2" color="textSecondary" align="center">
                     {'Copyright © '}
-                    {'Smart kids Inc.'}
+                    {'DPST'}
                     {new Date().getFullYear()}
-                    {'.  '}
+                    {' • '}
                     <a style={{color:'gray'}} href={'https://github.com/boroma4/dpst'}>Github</a>
                 </Typography>
             </Container>
