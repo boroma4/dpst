@@ -33,6 +33,8 @@ export async function compileInput(inputCode: string, inputCall: string, inputVa
             inputCode = replaceMathFunctions(inputCode, `${symbol}float('inf')`, `${symbol}Infinity`);
         }
         inputCode = fixVariables(inputCode);
+        inputCode = fixLenKeyword(inputCode);
+        //console.log(inputCode);
     }
 
     return group(inputCode, inputCall, inputVariables);
@@ -128,4 +130,13 @@ const fixVariables = (code: string): string =>{
         }
     }
     return words.join(' ');
+};
+
+const fixLenKeyword = (code: string): string =>{
+    while(code.includes('len(')){
+        const idx = code.indexOf('len(');
+        const varName = code.substring(idx + 4, code.indexOf(')', idx));
+        code = code.replace(`len(${varName})`, `${varName}.length`)
+    }
+    return code;
 };
