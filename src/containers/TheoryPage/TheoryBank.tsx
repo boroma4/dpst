@@ -118,20 +118,17 @@ export default  {
         "\n" +
         "\n #### Bottom-up approach:" +
          "\n" +
-          "\n This approach is a bit more complex to think of than the top-down or naive approach (good ole Recursion $2^{n}$ !). The key to understand it is to think of the problem as lego pieces. Well, except for we, as programmers, have to make these lego pieces ourselves. Since we all like Fibonacci numbers so much, we will use this example again. \n\nWe know that each next number is the sum of previous two numbers. We can make it so, that the first few cases are already computed and stored in a variable, instead of using a whole array for this. Consider the following Python script:" +
+          "\n This approach is a bit more complex to think of than the top-down or naive approach (good ole Recursion $2^{n}$ !). The key to understand it is to think of the problem as lego pieces. Well, except for we, as programmers, have to make these lego pieces ourselves. " +
+        " In bottom-up DP or tabulation, we usually create an N-D array (N depends on number of parameters) and fill it from \"bottom\" to the \"top\".Since we all like Fibonacci numbers so much, we will use this example again. \n\nWe know that each next number is the sum of previous two numbers. We can make it so, that the first few cases are already computed and stored in an array. Consider the following Python script:" +
         "\n" +
         "```Python\n" +
         "\n" +
         "def fibonacciVal(n):  \n" +
-        "    if n == 0 or n == 1:\n" +
-        "       return n  \n\n" +
-        "    a = 0   \n" +
-        "    b = 1    \n\n" +
+        "    dp = [0] * (n+1)   \n" +
+        "    dp[1] = 1    \n\n" +
         "    for i in range(2, n+1):    \n" +
-        "        temp = a + b  \n" +
-        "        a = b\n" +
-        "        b = temp\n\n" +
-        "    return b\n" +
+        "        dp[i] = dp[i-1] + dp[i-2]  \n" +
+        "    return dp[n]\n" +
         "```\n" +
         "\n" +
         "This approach is very elegant, but sometimes hard to grasp. Think of problem as little granular pieces: you solve small sub-problems and then use the result later on solving other problems, composed out of these small ones."
@@ -139,7 +136,8 @@ export default  {
     '3.2. Analysis':[
         "Memoization leads to a more efficient algorithm and our top-down Fibonacci number solution using memoization reduces the time complexity to the number of nodes in the recursive call tree, i.e., linear time $O(n)$. Also, the space complexity of the solution is $O(n)$ corresponding to the number of levels of the recursive calls n. " +
         "\n" +
-        "\n As to what we had in bottom-up approach, the time complexity is $O(n)$ and space complexity would be $O(1)$. This is the best we can achieve for Fibonacci numbers in any of the cases.\n" +
+        "\n As to what we had in bottom-up approach, the time complexity is $O(n)$ and space complexity would be $O(n)$. We could improve it further to only store two variables instead of the whole array to make the time complexity $O(1)$. Here is a comparison from [GFG](https://www.geeksforgeeks.org/tabulation-vs-memoization/).\n" +
+        "![comparison](https://media.geeksforgeeks.org/wp-content/cdn-uploads/Tabulation-vs-Memoization-1.png)\n"+
         "\n Usually bottom-up approach is preferred, it requires more creativity but allows to get rid of recursion, which is often desired.\n" +
         "\n Dynamic programming allows us to speed up the computations significantly and save space at the same time. Generally, as you encounter more difficult problems in dynamic programming their complexity will grow (for example, one of the popular algorithms Edit Distance, for finding the number of operations needed to convert one string into another string can be solved with dynamic programming in $O(m*n)$), however this would still yield better performance, than other algorithms.\n\n The whole point of dynamic programming is that it is dynamic - the program builds itself up starting from the smallest input or reuses already solved parts by dividing the problem, and reaches the level we want it to reach." +
         "\n\nSimilar principles apply to the LCS problem, Edit Distance, 1-0 Knapsack and many more. These and other problems can be visualized with the help of recursive tree on our toolbox. ", true
