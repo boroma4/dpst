@@ -74,7 +74,7 @@ const TheoryPage: FunctionComponent<Props> = (props) => {
                   <div className={classes.drawerContainer}>
                       <List>
                           {topics.map((text, index) => (
-                              <ListItem button style={(text === chosenPage)? ({backgroundColor:"#3f51b5",color:"white"}) : ({})} key={text} onClick={()=>{console.log(index);setChosenPage(text)}}>
+                              <ListItem button style={(text === chosenPage)? ({backgroundColor:"#3f51b5",color:"white"}) : ({})} key={text} onClick={()=>{setChosenPage(text)}}>
                                   <ListItemText primary={text} />
                               </ListItem>
                           ))}
